@@ -1,0 +1,158 @@
+{
+  "version": "1.0",
+  "description": "DocMind RAG 评估测试集 - 基于《Java开发手册》",
+  "total_count": 15,
+  "categories": ["命名规约", "并发处理", "集合处理", "异常日志", "常量定义", "OOP规约", "代码格式"],
+  "test_cases": [
+    {
+      "question": "POJO类中的布尔变量能用is开头吗？",
+      "ground_truth_answer": "不能。POJO类中的布尔类型变量都不要加is前缀，否则部分框架解析会引起序列化错误。",
+      "ground_truth_contexts": [
+        "【强制】POJO 类中的布尔类型变量都不要加 is 前缀，否则部分框架解析会引起序列化错误"
+      ],
+      "category": "命名规约",
+      "difficulty": "easy",
+      "source": "manual"
+    },
+    {
+      "question": "为什么不推荐使用Executors创建线程池？",
+      "ground_truth_answer": "线程池不允许使用Executors去创建，而是通过ThreadPoolExecutor的方式。因为Executors返回的线程池对象弊端：FixedThreadPool和SingleThreadPool允许的请求队列长度为Integer.MAX_VALUE，可能会堆积大量请求导致OOM；CachedThreadPool允许创建的线程数量为Integer.MAX_VALUE，可能会创建大量线程导致OOM。",
+      "ground_truth_contexts": [
+        "【强制】线程池不允许使用 Executors 去创建，而是通过 ThreadPoolExecutor 的方式"
+      ],
+      "category": "并发处理",
+      "difficulty": "medium",
+      "source": "manual"
+    },
+    {
+      "question": "SimpleDateFormat是线程安全的吗？怎么处理日期格式化？",
+      "ground_truth_answer": "SimpleDateFormat是线程不安全的类，一般不要定义为static变量。如果定义为static，必须加锁，或者使用DateUtils工具类。JDK8及以上推荐使用Instant代替Date，使用DateTimeFormatter代替SimpleDateFormat。",
+      "ground_truth_contexts": [
+        "【强制】SimpleDateFormat 是线程不安全的类，一般不要定义为 static 变量"
+      ],
+      "category": "并发处理",
+      "difficulty": "medium",
+      "source": "manual"
+    },
+    {
+      "question": "包名怎么命名？",
+      "ground_truth_answer": "包名统一使用小写，点分隔符之间有且仅有一个自然语义的英语单词。包名统一使用单数形式，但是类名如果有复数含义，类名可以使用复数形式。",
+      "ground_truth_contexts": [
+        "【强制】包名统一使用小写，点分隔符之间有且仅有一个自然语义的英语单词"
+      ],
+      "category": "命名规约",
+      "difficulty": "easy",
+      "source": "manual"
+    },
+    {
+      "question": "常量命名有什么规范？",
+      "ground_truth_answer": "常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚，不要嫌名字长。",
+      "ground_truth_contexts": [
+        "【强制】常量命名全部大写，单词间用下划线隔开，力求语义表达完整清楚"
+      ],
+      "category": "命名规约",
+      "difficulty": "easy",
+      "source": "manual"
+    },
+    {
+      "question": "ArrayList的subList返回的结果能强转成ArrayList吗？",
+      "ground_truth_answer": "不能。ArrayList的subList结果不可强转成ArrayList，否则会抛出ClassCastException异常。subList()返回的是ArrayList的内部类SubList，并不是ArrayList本身，而是ArrayList的一个视图。",
+      "ground_truth_contexts": [
+        "【强制】ArrayList 的 subList 结果不可强转成 ArrayList"
+      ],
+      "category": "集合处理",
+      "difficulty": "medium",
+      "source": "manual"
+    },
+    {
+      "question": "什么情况下不能在foreach里面进行元素的remove/add操作？",
+      "ground_truth_answer": "不要在foreach循环里进行元素的remove/add操作，remove元素请使用Iterator方式。如果并发操作，需要对Iterator对象加锁。",
+      "ground_truth_contexts": [
+        "【强制】不要在 foreach 循环里进行元素的 remove / add 操作"
+      ],
+      "category": "集合处理",
+      "difficulty": "medium",
+      "source": "manual"
+    },
+    {
+      "question": "方法的参数个数有限制吗？",
+      "ground_truth_answer": "方法的参数个数不宜过多，推荐不超过5个。如果超过5个，建议将多个参数封装成一个DTO对象传递。",
+      "ground_truth_contexts": [
+        "方法的参数不宜过多"
+      ],
+      "category": "代码格式",
+      "difficulty": "easy",
+      "source": "manual"
+    },
+    {
+      "question": "hashCode和equals方法需要同时重写吗？",
+      "ground_truth_answer": "只要重写equals，必须重写hashCode。因为Set存储的是不重复的对象，依据hashCode和equals进行判断，所以Set存储的对象必须重写这两个方法。如果自定义对象作为Map的键，那么必须覆写hashCode和equals。",
+      "ground_truth_contexts": [
+        "只要重写 equals，必须重写 hashCode"
+      ],
+      "category": "OOP规约",
+      "difficulty": "medium",
+      "source": "manual"
+    },
+    {
+      "question": "异常捕获后可以什么都不做吗？",
+      "ground_truth_answer": "不可以。捕获异常是为了处理它，不要捕获了却什么都不处理而抛弃之。如果不想处理它，请将该异常抛给它的调用者。最外层的业务使用者必须处理异常，将其转化为用户可以理解的内容。",
+      "ground_truth_contexts": [
+        "【强制】捕获异常是为了处理它，不要捕获了却什么都不处理而抛弃之"
+      ],
+      "category": "异常日志",
+      "difficulty": "easy",
+      "source": "manual"
+    },
+    {
+      "question": "事务场景中使用try-catch有什么注意事项？",
+      "ground_truth_answer": "有try块放到了事务代码中，catch异常后，如果需要回滚事务，一定要注意手动回滚事务。",
+      "ground_truth_contexts": [
+        "有 try 块放到了事务代码中，catch 异常后，如果需要回滚事务，一定要注意手动回滚事务"
+      ],
+      "category": "异常日志",
+      "difficulty": "hard",
+      "source": "manual"
+    },
+    {
+      "question": "接口和实现类的命名规范是什么？",
+      "ground_truth_answer": "对于Service和DAO类，基于SOA的理念，暴露出来的服务一定是接口，内部的实现类用Impl的后缀与接口区别。如果是形容能力的接口名称，取对应的形容词为接口名（通常是–able的形容词）。",
+      "ground_truth_contexts": [
+        "对于 Service 和 DAO 类，基于 SOA 的理念，暴露出来的服务一定是接口，内部的实现类用 Impl 的后缀与接口区别"
+      ],
+      "category": "命名规约",
+      "difficulty": "easy",
+      "source": "manual"
+    },
+    {
+      "question": "使用Map的keySet方法遍历时可以删除元素吗？",
+      "ground_truth_answer": "使用entrySet遍历Map类集合KV，而不是keySet方式进行遍历。keySet其实是遍历了2次，一次是转为Iterator对象，另一次是从hashMap中取出key所对应的value。而entrySet只是遍历了一次就把key和value都放到了entry中，效率更高。",
+      "ground_truth_contexts": [
+        "【推荐】使用 entrySet 遍历 Map 类集合 KV，而不是 keySet 方式进行遍历"
+      ],
+      "category": "集合处理",
+      "difficulty": "medium",
+      "source": "manual"
+    },
+    {
+      "question": "代码中的魔法值是什么意思？要怎么处理？",
+      "ground_truth_answer": "不允许任何魔法值（即未经预先定义的常量）直接出现在代码中。反例：String key = \"Id#taobao_\" + tradeId; 应该将\"Id#taobao_\"定义为常量。",
+      "ground_truth_contexts": [
+        "【强制】不允许任何魔法值（即未经预先定义的常量）直接出现在代码中"
+      ],
+      "category": "常量定义",
+      "difficulty": "easy",
+      "source": "manual"
+    },
+    {
+      "question": "Long类型赋值的时候有什么注意事项？",
+      "ground_truth_answer": "在long或者Long赋值时，数值后使用大写字母L，不能是小写字母l，小写容易跟数字混淆，造成误解。",
+      "ground_truth_contexts": [
+        "【强制】在 long 或者 Long 赋值时，数值后使用大写字母 L"
+      ],
+      "category": "常量定义",
+      "difficulty": "easy",
+      "source": "manual"
+    }
+  ]
+}

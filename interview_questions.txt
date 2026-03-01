@@ -1,0 +1,17 @@
+模拟面试官拷打DocMind项目的问题列表：
+
+1. 项目整体架构是什么？为什么选择RAG（Retrieval-Augmented Generation）作为核心设计？
+2. docmind包中的embedding模块如何实现本地和远程BGE嵌入？它们在性能和部署上的区别是什么？
+3. retrieval模块中的hybrid_retriever是如何结合BM25和向量检索的？这种混合检索的优势是什么？
+4. document模块中loader.py和processor.py如何处理不同类型的文档（如PDF、TXT）？如何确保文档处理的效率？
+5. llm模块中的client.py支持哪些LLM模型？如何处理API调用时的错误和超时？
+6. generation模块的answer_generator.py是如何基于检索结果生成答案的？使用了哪些提示工程技巧？
+7. reranker模块的作用是什么？本地和远程BGE reranker在准确性上有什么差异？
+8. evaluation目录下的ablation_study.py用于什么目的？如何设计消融实验来评估不同组件的影响？
+9. 项目中使用Qdrant作为向量数据库，有哪些优势？如何处理数据库的索引和更新？
+10. 如何优化查询处理的速度？query_processor.py中有什么具体的优化策略？
+11. core模块中的config.py如何管理项目配置？支持环境变量吗？
+12. agent模块中的rag_agent.py是如何协调整个RAG流程的？它处理多轮对话吗？
+13. 项目如何处理数据隐私和安全？特别是在embedding和检索过程中。
+14. tests目录为空，如何添加单元测试和集成测试来覆盖主要功能？
+15. 未来改进计划：如何集成更多嵌入模型或支持实时文档更新？
