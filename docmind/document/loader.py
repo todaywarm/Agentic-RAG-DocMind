@@ -1,24 +1,18 @@
-"""
-文档加载器
-
-支持多种格式的文档加载：
-- PDF
-- DOCX
-- Markdown
-- 纯文本
-"""
-
 import os
+import time
+import logging
 from typing import List, Dict, Any, Optional
 from abc import ABC, abstractmethod
 
 from docmind.core.exceptions import DocumentProcessingError
 
+logger = logging.getLogger(__name__)
+
 
 class BaseLoader(ABC):
     """文档加载器基类"""
     
-    @abstractmethod#强制子类必须实现的方法
+    @abstractmethod
     def load(self, file_path: str) -> str:
         """
         加载文档
@@ -31,7 +25,7 @@ class BaseLoader(ABC):
         """
         pass
     
-    @property#将方法转换成属性使用
+    @property
     @abstractmethod
     def supported_extensions(self) -> List[str]:
         """支持的文件扩展名"""
@@ -75,7 +69,6 @@ class DocxLoader(BaseLoader):
             for para in doc.paragraphs:
                 text = para.text.strip()
                 if text:
-                    # 简单的标题识别
                     if para.style.name.startswith('Heading'):
                         level = int(para.style.name[-1]) if para.style.name[-1].isdigit() else 1
                         paragraphs.append(f"{'#' * level} {text}")
@@ -150,18 +143,31 @@ class DocumentLoader:
         Returns:
             文档内容（Markdown 格式）
         """
+        start_time = time.time()
+        logger.info(f"[DocumentLoader] Start loading: {file_path}")
+        
         if not os.path.exists(file_path):
+            logger.error(f"[DocumentLoader] File not found: {file_path}")
             raise DocumentProcessingError(f"File not found: {file_path}")
         
         ext = os.path.splitext(file_path)[1].lower()
         
         if ext not in self.loaders:
+            logger.error(
+                f"[DocumentLoader] Unsupported file type: {ext}. "
+                f"Supported: {list(self.loaders.keys())}"
+            )
             raise DocumentProcessingError(
                 f"Unsupported file type: {ext}. "
                 f"Supported: {list(self.loaders.keys())}"
             )
         
-        return self.loaders[ext].load(file_path)
+        result = self.loaders[ext].load(file_path)
+        elapsed = time.time() - start_time
+        logger.info(
+            f"[DocumentLoader] Finished loading: {file_path} (elapsed: {elapsed:.2f}s)"
+        )
+        return result
     
     def register_loader(self, loader: BaseLoader):
         """注册自定义加载器"""
