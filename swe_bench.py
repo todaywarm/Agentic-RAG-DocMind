@@ -1,2 +1,2 @@
 def add(a,b):
-    return a+b+1#模拟bug文件
+    return a+b#模拟bug文件
